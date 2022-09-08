@@ -24,7 +24,18 @@
 // document.querySelector('.title').style.color = 'green';
 // document.querySelector('.title').style.fontWeight = 'bold';
 
-var items = document.getElementsByClassName('list-group-item')
+// var items = document.getElementsByClassName('list-group-item')
+// console.log(items);
+// console.log(items[1]);
+// items[1].textContent = 'hello';
+// items[2].style.background = 'green';
+
+// for(let i=0; i<items.length; i++){
+//     items[i].style.fontWeight = 'bold';
+//     items[i].style.color = 'green';
+// }
+
+var items = document.getElementsByTagName('li');
 console.log(items);
 console.log(items[1]);
 items[1].textContent = 'hello';
