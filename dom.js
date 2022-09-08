@@ -35,13 +35,24 @@
 //     items[i].style.color = 'green';
 // }
 
-var items = document.getElementsByTagName('li');
-console.log(items);
-console.log(items[1]);
-items[1].textContent = 'hello';
-items[2].style.background = 'green';
+// var items = document.getElementsByTagName('li');
+// console.log(items);
+// console.log(items[1]);
+// items[1].textContent = 'hello';
+// items[2].style.background = 'green';
 
-for(let i=0; i<items.length; i++){
-    items[i].style.fontWeight = 'bold';
-    items[i].style.color = 'green';
-}
+// for(let i=0; i<items.length; i++){
+//     items[i].style.fontWeight = 'bold';
+//     items[i].style.color = 'green';
+// }
+
+
+// document.querySelector('.list-group-item:nth-child(2)').style.background = 'green';
+// document.querySelector('.list-group-item:nth-child(3)').style.display = 'None';
+
+// document.querySelectorAll('.list-group-item')[1].style.color = 'green';
+
+// var items = document.querySelectorAll('.list-group-item');
+// for(let i=0; i<items.length; i+=2){
+//     items[i].style.background = 'green';
+// }
