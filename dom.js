@@ -15,11 +15,22 @@
 // console.log(document.images);
 
 //console.log(document.getElementById('header-title'));
-var header = document.getElementById('header-title');
-// header.textContent = 'hello';
-// header.innerText = 'bye';
+// var header = document.getElementById('header-title');
+// // header.textContent = 'hello';
+// // header.innerText = 'bye';
 
-// header.innerHTML = '<h1> hello </h1>'
-header.style.borderBottom = '4px solid black';
-document.querySelector('.title').style.color = 'green';
-document.querySelector('.title').style.fontWeight = 'bold';
+// // header.innerHTML = '<h1> hello </h1>'
+// header.style.borderBottom = '4px solid black';
+// document.querySelector('.title').style.color = 'green';
+// document.querySelector('.title').style.fontWeight = 'bold';
+
+var items = document.getElementsByClassName('list-group-item')
+console.log(items);
+console.log(items[1]);
+items[1].textContent = 'hello';
+items[2].style.background = 'green';
+
+for(let i=0; i<items.length; i++){
+    items[i].style.fontWeight = 'bold';
+    items[i].style.color = 'green';
+}
