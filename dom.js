@@ -56,3 +56,44 @@
 // for(let i=0; i<items.length; i+=2){
 //     items[i].style.background = 'green';
 // }
+
+var itemlist = document.querySelector('#items');
+console.log(itemlist.parentNode);
+console.log(itemlist.parentElement);
+console.log(itemlist.childNodes);
+console.log(itemlist.children);
+console.log(itemlist.children[1]);
+itemlist.children[1].style.background = 'yellow';
+console.log(itemlist.firstChild);
+console.log(itemlist.firstElementChild);
+itemlist.firstElementChild.textContent = 'Hello';
+console.log(itemlist.lastChild);
+console.log(itemlist.lastElementChild);
+console.log(itemlist.nextSibling);
+console.log(itemlist.nextElementSibling);
+console.log(itemlist.previousSibling);
+console.log(itemlist.previousElementSibling);
+
+var newDiv = document.createElement('div');
+newDiv.className = 'Hello';
+newDiv.id = 'div1';
+newDiv.setAttribute('title','hello div');
+
+var newDivText = document.createTextNode('hello world');
+newDiv.appendChild(newDivText);
+
+console.log(newDiv);
+
+var container = document.querySelector('header .container');
+var h1 = document.querySelector('header h1');
+container.insertBefore(newDiv, h1);
+
+var newItem = document.createElement('li');
+var text = document.createTextNode('Hello world');
+newItem.appendChild(text);
+
+var list = document.querySelector('ul#items');
+
+var li_1 = document.querySelectorAll('.list-group-item')[0];
+
+list.insertBefore(newItem, li_1);
