@@ -1,22 +1,22 @@
-var form = document.getElementById('my-form');
+var myform = document.getElementById('myform');
 
-form.addEventListener('submit', onsubmission);
+myform.addEventListener('submit', onsubmission);
 
 function onsubmission(e){
+    e.preventDefault();
     var myname = document.getElementById('name').value;
     var email = document.getElementById('email').value;
-    e.preventDefault();
-    localStorage.setItem(email, myname);
+
+    var temp_obj = new Object();
+    temp_obj.myname = myname;
+    temp_obj.email = email;
+
+    localStorage.setItem(email, JSON.stringify(temp_obj));
+
+    var li = document.createElement('li');
+    var ul = document.getElementById('items');
+    li.appendChild(document.createTextNode(myname+" "+email));
+    ul.appendChild(li);
 }
 
-let myobj = {firstname : "hrithik" , age : 23};
-let myobj2 = {firstname : "ross", age : 29};
-let string_obj = JSON.stringify(myobj);
-let original_obj = JSON.parse(string_obj);
-
-localStorage.setItem('myobj', string_obj);
-localStorage.setItem('myobj', string_obj);
-
-console.log(string_obj);
-console.log(original_obj.firstname);
 
