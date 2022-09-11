@@ -44,17 +44,21 @@ function remove(e){
 
 filter.addEventListener('keyup', filterItems);
 
+
 function filterItems(e){
     var text = e.target.value.toLowerCase();
-    var items = itemlist.getElementsByTagName('li');
-    Array.from(items).forEach(function (item){
-        var itemname = item.firstChild.textContent;
-        if(itemname.toLowerCase().indexOf(text) != -1){
-            item.style.display = 'block';
+    var contents = itemlist.querySelectorAll('li');
+
+    for(let i=0; i<contents.length; i++){
+        var itemname = contents[i].firstChild.textContent;
+        var descname = contents[i].firstChild.nextSibling.textContent;
+
+        if(itemname.toLowerCase().indexOf(text) != -1 || descname.toLowerCase().indexOf(text) != -1){
+            contents[i].style.display = 'block';
         }
         else{
-            item.style.display = 'None';
+            contents[i].style.display = 'None';
         }
-    })
+    }
 
 }
