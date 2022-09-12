@@ -8,7 +8,7 @@ function onsubmission(e){
     var email = document.getElementById('email').value;
 
     if(localStorage.getItem(email)){
-        removeFromScreen(email);
+        removeFromScreen();
     }
 
     var temp_obj = new Object();
@@ -41,10 +41,21 @@ function onsubmission(e){
         ul.removeChild(li);
     }
 
-    function removeFromScreen(email){
+    function removeFromScreen(){
         var li = document.getElementById(email);
         var ul = document.getElementById('items');
-        ul.removeChild(li);
+        if(ul.hasChildNodes()){
+            ul.removeChild(li);
+        }
+    }
+
+    editbtn.addEventListener('click', edititem);
+    function edititem(e){
+        var nameinput = document.getElementById('name');
+        var emailinput = document.getElementById('email');
+        var key = e.target.parentElement.id;
+        nameinput.value = JSON.parse(localStorage.getItem(key)).myname;
+        emailinput.value = JSON.parse(localStorage.getItem(key)).email;
     }
 }
 
