@@ -1,373 +1,47 @@
-Question 1 & 2)
-
-this inside global scope - 
-
-this.table = 'window table';
-console.log(this.table);
-
-this.garage = {
-	table: 'garage table';
-};
-
-
-
-this inside an object - 
-
-let johnsRoom = {
-	table : 'johns table';
-};
-
-console.log(johnsRoom.table); //this.johnsRoom.table cannot be used here because we used 'let' to create the object and we know that let variables dont belong to the window object.
-
-
-
-this inside an object method-
-
-//Adding a cleantable() method to johnsRoom object.
-
-let johnsRoom = {
-	table : 'johns table';
-	cleanTable(){
-	console.log(`cleaning ${this.table}`); //this.table refers to johns table.
-	}
-};
-
-//adding a cleantable() method to this.garage.
-
-this.garage = {
-	table: 'garage table';
-	cleantable(){
-	console.log(`cleaning ${this.table}`); //here, this.table refers to garage table.
-	}
-};
-
-
-
-this inside a regular function - 
-
-//adding a cleantable method to global object i.e. window object 
-
-this.table = 'window table';
-
-const cleantable = function(){
-	console.log(`cleaning ${this.table}`);
-}
-
-this code above will work fine but we shouldn't use that because it can lead to errors if we use strict mode.
-
-Instead we should use the call method:-
-
-cleantable.call(this);
-
-
-
-With the help of call method, we dont even have to create a separate cleantable method every time. call method allows one method to be used by multiple objects. 
-
-e.g.
-
-const cleantable = function(){
-	console.log(`cleaning ${this.table}`);
-}
-
-cleantable.call(this); //here, this.table will refer to the window object as we passed this in the argument.
-cleantable.call(this.garage);	//here, this.table will refer to the garage object
-cleantable.call(johnsRoom);	//this will refer to johnsRoom object.
-
-
-
-this inside an inner function - 
-
-const cleantable = function(soap){
-
-	const innerFunction = function(_soap){
-	console.log(`cleaning ${this.table} using ${_soap}`);
-	}
-	innerFunction(soap);
-};
-
-
-using this.table like that can lead to errors if we use strict mode, so lets use call method to avoid that:-
-
-this.table = 'window table';
-
-const cleantable = function(soap){
-    const innerfunction = function(_soap){
-        console.log(`cleaning ${this.table} using ${_soap}`);
-    }
-    innerfunction(soap);
-};
-
-this.garage = {
-    table : 'garage table'
-};
-
-cleantable.call(this.garage, 'some soap');
-
-But there's a problem here, we're trying to refer to this.garage but it still prints window table instead of garage table. This is because this keyword always refers to the global object inside a regular function even if its an inner function.
-
-We have multiple ways to fix that :-
-
 1)
 
-this.table = 'window table';
+first, when the program runs, a global execution context is created in the call stack. Then, the lines of code are executed. When javascript comes across a function that is not part of javascript, it uses the window object to get the particular API and stores the callback function in the web API area. In case of a setTimeout method, the web API also starts the timer with mentioned time and in case of a fetch method, the web API stores the callback and waits for the response for the fetch command. When the timer finishes counting or if the response comes for the fetch command, these callback functions are pushed into the callback queue or microtask queue where functions inside microtask queue hold a higher priority than callback queue. Infact, callback queue cannot push any function into the call stack until the microtask queue is empty and this even leads to starvation of functions in callback queue.
 
-const cleantable = function(soap){
-    that = this;
-    const innerfunction = function(_soap){
-        console.log(`cleaning ${that.table} using ${_soap}`);
-    }
-    innerfunction(soap);
-};
-
-this.garage = {
-    table : 'garage table'
-};
-
-cleantable.call(this.garage, 'some soap');
-
-Now it'll print the correct output.
+Javascript doesn't wait for these processes to finish and continues on to the next line of code. In case of functions, new execution contexts are created and when the function finishes executing, its popped from the call stack. Finally, when there's nothing left in the global scope to execute, its popped from the call stack as well. The event loop always keeps track of the call stack, callback queue and microtask queue. If the call stack becomes empty, then it pushes the function inside the callback queue to the call stack. The event loop also checks if there's anything in the microtask queue and if there is, that is pushed into the call stack first.
 
 
 2)
 
+Global execution context is removed from the stack when there are no lines of code left to execute.
 
-this.table = 'window table';
 
-const cleantable = function(soap){
-    const innerfunction = (_soap)=>{
-        console.log(`cleaning ${this.table} using ${_soap}`);
-    }
-    innerfunction(soap);
-};
+3)
 
-this.garage = {
-    table : 'garage table'
-};
+when DOM methods are used, the DOM API is called which goes into the document object model searches for the specified object and returns it. If there's a callback function, its stored in the web API space and depending on what type of method we've used, its pushed into the callback queue or microtask queue. For example, in case of an eventlistener method, the callback will get stored in the web API area and the type of event will be attached to it as well. The callback function stays in the web API area waiting for the even to be triggered. It doesn't get deleted unless its explicitly removed from the code or the browser is closed. 
+As soon as the event is triggered, the callback function is pushed into the callback queue and if the call stack is empty, the event loop removes the callback function from the queue and pushes it into the call stack where it is executed immediately and popped after execution completes.
 
-cleantable.call(this.garage, 'some soap');
 
-here, we use an arrow function because in arrow functions, this keyword inside an inner function will always point to the same object as the outer function and since the outer function in this example above points to this.garage, thats why the inner function also points to that.
+4)
 
+callback queue is needed in order to keep track of all the callback functions because there can be multiple callback functions, for example, if there are multiple setTimeout() methods and if there was no callback queue then the event loop will not know which callback function to push into the stack first.
 
 
-this inside a constructor - 
+5)
 
-this.table = 'window table';
+when javascript comes across the fetch command, the callback function is put in the web API environment and the fetch API is called, which sends the data to the mentioned server and waits for a response. 
+As soon as the fetch API gets the response, it pushes the callback function into the microtask queue because it uses promises. 
+Since mircotask queue has a higher priority, all the callback functions inside it will be pushed in the call stack first(if the call stack is empty) one by one and the callback functions inside the callback queue will have to wait.
 
-this.garage = {
-	table: 'garage table'
-};
 
+6)
 
-let johnsRoom = {
-	table : 'johns table'
-};
+microtask queue is very similar to callback queue. It has a higher priority than the callback queue so the functions inside this queue will be pushed into the call stack first. All the callback functions that come back using promises or callback functions that come back through mutation observer are put into the microtask queue. Everything else goes into the callback queue or task queue.
 
-let createRoom = function(name){
-    this.table = `${name}s room`
-}
 
-createRoom.prototype.cleanTable = function(soap){       // we use a prototype when we want a function to be available to all the objects by default.
-    console.log(`cleaning ${this.table} using ${_soap}`);
-}
+7)
 
-const jillsRoom = new createRoom("jill");
-const johnsRoom = new createRoom("john");
+Since the microtask queue has a higher priority and the callback queue has to wait for the microtask queue to become empty, it might happen that the functions inside the callback queue will never get a chance to execute and this is called starvation of the function inside callback queue.
 
 
-jillsRoom.cleanTable('some soap');
-johnsRoom.cleanTable('some soap');
+8)
 
+callback queue is used because the order of the callback functions must be kept so that the event loop knows which callback function to push into the call stack next. Since queues follow a first in first out structure, we use a callback queue so that the callback function that comes first will be pushed first into the queue first will be pushed into the call stack first. We cannot use a stack because stacks follow a last in first out structure which is not useful in this case.
 
+9)
 
-this inside a class :-
-
-
-this.table = 'window table';
-
-this.garage = {
-	table: 'garage table'
-};
-
-
-let johnsRoom = {
-	table : 'johns table'
-};
-
-class createRoom{
-    constructor(name){
-        this.table = `${name}s room`
-    }
-
-    cleanTable(soap){       
-        console.log(`cleaning ${this.table} using ${_soap}`);
-    }
-
-}
-
-createRoom.prototype.cleanTable = 
-
-const jillsRoom = new createRoom("jill");
-const johnsRoom = new createRoom("john");
-
-
-jillsRoom.cleanTable('some soap');
-johnsRoom.cleanTable('some soap');
-
-
-
-
-
-
-Question 3 to 6)
-
-class Student{
-    static count = 0;
-    constructor(name, age, phone_no, marks){
-        this.name = name;
-        this.age = age;
-        this.phone_no = phone_no;
-        this.marks = marks;
-
-        function check(){
-            if(marks>=40){
-                console.log(`${name} is eligibile`);
-            }
-            else{
-                console.log(`${name} is not eligibile`);
-            }
-        }
-
-        Student.count++;
-        check();
-    }
-}
-
-function peoplecount(){
-    console.log("there are "+ Student.count + " people");
-}
-
-const student1 = new Student("hrithik", 23, 94325245, 98);
-const student2 = new Student("joey", 28, 2367777, 38);
-const student3 = new Student("ralph", 25, 1222233, 76);
-const student4 = new Student("melissa", 22, 352523, 93);
-const student5 = new Student("chelsea", 29, 4523453, 91);
-
-peoplecount();
-
-
-
--------------------------------------------
-
-let getA = a => a;
-
-console.log(getA(1));
-
--------------------------------------------
-let square = (a) => {return a*a};
-console.log(square(2));
-
-
-let multiply = (a,b) => {return a*b};
-
---------------------------------------------
-var x = function(){
-this.val = 1;
-
-setTimeout(()=>{
-this.val++;
-console.log(this.val)},1)
-};
-
----------------------------------------------
-
-var x = function(){
-console.log(arguments[0])
-};
-
-
-x(1,2,3);
-
----------------------------------------------
-
-var x = (...n)=>{
-console.log(n[0])
-};
-
-
-x(1,2,3);
-
-
----------------------------------------------
-
-
-class Student{
-    constructor(name, age, marks){
-        this.name = name;
-        this.age = age;
-        this.marks = marks;
-    }
-
-    setPlacementAge(minAge){
-          return (minMarks)=>{
-            if(this.marks > minMarks && this.age > minAge){
-                arr.push(this.name);
-                console.log(this.name + " is eligible"); 
-            }
-            else{
-                console.log(this.name + " is not eligibile");
-            }
-          }
-    }
-}
-
-this.arr = [];
-const hrithik = new Student('hrithik', 23, 98);
-const joey = new Student('joey', 17, 45);
-const ross = new Student('ross', 24, 96);
-const chandler = new Student('chandler', 24, 93);
-const monica = new Student('monica', 18, 84);
-joey.setPlacementAge(18)(40);
-hrithik.setPlacementAge(18)(40);
-ross.setPlacementAge(18)(40);
-chandler.setPlacementAge(18)(40);
-monica.setPlacementAge(18)(40);
-
-console.log('The eligibile students are :-');
-for(let i of arr){
-    console.log(i);
-}
-
-
-----------------------------------------------
-
-The major difference between a regular function and an arrow function is that the 'this' keyword works differently in both. In a regular method, this always refers to the object that invoked the function. But inside an arrow function, this refers to the closest parent object.
-
-----------------------------------------------
-To understand why it was introduced, lets see an example - 
-
-this.a = 29;
-        const obj = {
-            printA : function(){
-                console.log(this.a);
-            }
-        }
-
-        obj.printA();
-
-In the above example, it'll print undefined because it doesn't know what this.a is because it doesn't exist inside that scope. So, we use an arrow function to refer to the parent object i.e. this.a = 29.
-
-e.g. 
-
-this.a = 29;
-        const obj = {
-            printA : ()=>{
-                console.log(this.a);
-            }
-        }
-
-        obj.printA();
-
-Since, this keyword inside an arrow function refers to the closest parent object, this.a will now print 29.         
-
-
+event loop handles async code by putting the callback functions into callback queue or the microtask queue. The event loop monitors the call stack and both the queues to see if the call stack has become empty and if there are any functions inside the queues, it then pushes the function into the call stack where the function is executed immediately. e.g. in case of a setTimeout() the callback function is put into the web API environment and the timer is started. As soon as the timer runs out, the callback function is pushed into the callback queue.
