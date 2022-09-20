@@ -7,7 +7,15 @@
     <title>Document</title>
 </head>
 <body>
-    <script src="practice.js">
+    <script>
+        this.a = 29;
+        const obj = {
+            printA : ()=>{
+                console.log(this.a);
+            }
+        }
+
+        obj.printA();
 
     </script>
 </body>
