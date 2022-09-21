@@ -1,67 +1,51 @@
-1)
+let myform = document.getElementById('myform');
+let expenseamount = document.getElementById('expenseamount');
+let description = document.getElementById('description');
+let category = document.getElementById('category');
+let items = document.getElementById('items');
 
-a
-b
-d
-c
+myform.addEventListener('submit', function(e){
+    e.preventDefault();
+    
+    let li = document.createElement('li');
+    li.id = description.value;
+    let delbtn = document.createElement('button');
+    let editbtn = document.createElement('button');
 
-c will get printed last because its inside a callback function. The call back function will be put inside the callback queue after the timer runs out but the event loop only pushes the function into the call stack when its empty, so first everything will be executed and the global execution context will be deleted and then finally event loop will push the callback function into the call stack and it'll be executed and c will be printed.
+    delbtn.style.marginRight = '4px';
+    delbtn.style.marginLeft = '4px';
+    editbtn.style.marginRight = '4px';
+    editbtn.style.marginLeft = '4px';
 
+    delbtn.appendChild(document.createTextNode('Delete Expense'));
+    editbtn.appendChild(document.createTextNode('Edit Expense'));
 
-2)
+    li.appendChild(document.createTextNode(expenseamount.value+" - "+category.value+" - "+description.value));
+    li.appendChild(delbtn);
+    li.appendChild(editbtn);
+    
+    if(!localStorage.getItem(description.value)){
+        items.appendChild(li);
+    }
 
-a
-b
-d
-c
+    const obj = new Object();
+    obj.expenseamount = expenseamount.value;
+    obj.category = category.value;
+    localStorage.setItem(description.value, JSON.stringify(obj));
+    
 
+    delbtn.addEventListener('click', function(e){
+        items.removeChild(e.target.parentElement);
+        localStorage.removeItem(e.target.parentElement.id);
+    })
 
-Same reason as above.
-c will get printed last because its inside a callback function. The call back function will be put inside the callback queue after the timer runs out but the event loop only pushes the function into the call stack when its empty so the delay time mentioned in the setTimeout doesn't matter, so first everything will be executed and the global execution context will be deleted and then finally event loop will push the callback function into the call stack and it'll be executed and c will be printed. 
-
-
-3)
-
-a
-b
-d
-c
-e
-
-same reason as above. Since the timer runs out faster for 'c' it'll be pushed into the callback queue first and then the timer will run out for 'e' and then it'll be pushed into the callback queue and since queues work on FIFO basis. The event loop will push the function for 'c' into the call stack first so c will get printed before e.
-
-
-4)
-
-spread operator is used to copy the values of an object to another object in such a way that if the values are changed in the second object, the values of the first object are not affected. We can also add values to the new object easily. Another use of it is that we can copy arrays and find their union easily using spread operator.
-
-e.g. 
-
-const obj1 = {key1: 'one', key2: 'two'};
-const obj2 = obj1;
-
-obj2.key2 = 'three';
-
-console.log(obj1)
-
-In this example, obj2 simply points to the reference of obj1 so changing the values in obj2 also changed the value for obj1 which is not what we want. 
-
-so we use spread operator to fix this:-
-
-const obj1 = {key1: 'one', key2: 'two'};
-
-const obj2 = {...obj1};
-obj2.key2 = 'four';
-
-console.log(obj1)
-
-spread operator creates a new object in the memory so when we change the values in the second object, it doesn't affect the first object.
+    editbtn.addEventListener('click', function(e){
+        items.removeChild(e.target.parentElement);
+        expenseamount.value = JSON.parse(localStorage.getItem(e.target.parentElement.id)).expenseamount;
+        description.value = e.target.parentElement.id;
+        category.value = JSON.parse(localStorage.getItem(e.target.parentElement.id)).category;
+        localStorage.removeItem(e.target.parentElement.id);
+    })
+})
 
 
-finding union of two arrays using spread operator - 
-
-arr1 = [1,2];
-arr2 = [3,4];
-
-arr3 = [...arr1, ...arr2];
-console.log(arr3)

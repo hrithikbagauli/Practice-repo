@@ -7,7 +7,31 @@
     <title>Document</title>
 </head>
 <body>
-    <button id="mybtn">Click me</button>
+    <form id="myform">
+        <label for="expenseamount">Choose expenseamount: </label>
+        <input type="number" name="expenseamount" id="expenseamount">
+
+        <label for="description">Choose description: </label>
+        <input type="text" name="description" id="description">
+
+        <label for="category">Choose a category: </label>
+        <select name="category" id="category">
+            <option value="fuel">fuel</option>
+            <option value="movie">movie</option>
+            <option value="food">food</option>
+            <option value="travel">travel</option>
+        </select>
+
+        <input type="submit" value="Add Expense">
+
+    </form>
+
+    <ul id="items"></ul>
+
+
+
+
+
     <script src="practice.js"></script>
 </body>
 </html>
