@@ -1,51 +1,36 @@
-let myform = document.getElementById('myform');
-let expenseamount = document.getElementById('expenseamount');
-let description = document.getElementById('description');
-let category = document.getElementById('category');
-let items = document.getElementById('items');
 
-myform.addEventListener('submit', function(e){
-    e.preventDefault();
-    
-    let li = document.createElement('li');
-    li.id = description.value;
-    let delbtn = document.createElement('button');
-    let editbtn = document.createElement('button');
+const posts = [
+    {title: 'post one', body: 'this is post one', createdAt: new Date().getTime()},
+    {title: 'post two', body: 'this is post two', createdAt: new Date().getTime()}
+];
 
-    delbtn.style.marginRight = '4px';
-    delbtn.style.marginLeft = '4px';
-    editbtn.style.marginRight = '4px';
-    editbtn.style.marginLeft = '4px';
+let intervalID = 0;
+function getPosts(){
+    clearInterval(intervalID);
+    intervalID = setInterval(()=>{
+        let output = '';
+        posts.forEach((jello) => {
 
-    delbtn.appendChild(document.createTextNode('Delete Expense'));
-    editbtn.appendChild(document.createTextNode('Edit Expense'));
+            output = output + `<li>${jello.title} - last updated: ${(new Date().getTime() - jello.createdAt)/1000} seconds ago</li>`;
+        }); 
+        document.body.innerHTML = output;
+    },1000)      
+}
 
-    li.appendChild(document.createTextNode(expenseamount.value+" - "+category.value+" - "+description.value));
-    li.appendChild(delbtn);
-    li.appendChild(editbtn);
-    
-    if(!localStorage.getItem(description.value)){
-        items.appendChild(li);
-    }
-
-    const obj = new Object();
-    obj.expenseamount = expenseamount.value;
-    obj.category = category.value;
-    localStorage.setItem(description.value, JSON.stringify(obj));
-    
-
-    delbtn.addEventListener('click', function(e){
-        items.removeChild(e.target.parentElement);
-        localStorage.removeItem(e.target.parentElement.id);
-    })
-
-    editbtn.addEventListener('click', function(e){
-        items.removeChild(e.target.parentElement);
-        expenseamount.value = JSON.parse(localStorage.getItem(e.target.parentElement.id)).expenseamount;
-        description.value = e.target.parentElement.id;
-        category.value = JSON.parse(localStorage.getItem(e.target.parentElement.id)).category;
-        localStorage.removeItem(e.target.parentElement.id);
-    })
-})
+function createPost(post, callback){
+    setTimeout(() => {
+        posts.push({...post, createdAt: new Date().getTime()});
+        callback();
+    }, 2000);
+}
 
 
+function create4thPost(post,callback){
+    setTimeout(() => {
+        callback({title: 'post three', body: 'this is post three'}, getPosts);
+        posts.push({...post, createdAt: new Date().getTime()});
+    }, 6000);
+}
+
+
+create4thPost({title:'post four', body: 'this is post four'}, createPost)
