@@ -1,5 +1,1 @@
-const promise1 = new Promise(()=>{
-    console.log('gello')
-}) 
-
-promise1.then();
+console.log('testing something out')
