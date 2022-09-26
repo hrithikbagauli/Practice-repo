@@ -1,138 +1,156 @@
+// console.log('person1: shows ticket');
+// console.log('person2: shows ticket');
+
+// const promiseWifeBringingTickets = new Promise((resolve, reject)=>{
+//     setTimeout(() => {
+//         resolve('ticket');
+//     }, 3000);
+// })
+
+
+// const getPopcorn = promiseWifeBringingTickets.then((t)=>{
+//     console.log('wife: i have the tickets');
+//     console.log('husband: we should go in');
+//     console.log('wife: no i am hungry');
+//     return new Promise((resolve, reject) => resolve(`${t} popcorn`))
+// });
+
+// const getButter = getPopcorn.then((t)=>{
+//     console.log('husband: i got some popcorn');
+//     console.log('wife: we should go in');
+//     console.log('wife: i need butter on my popcorn');
+//     return new Promise((resolve, reject) => resolve(`${t} butter`))
+// });
+
+// const getColdDrinks = getButter.then((t)=>{
+//     console.log('husband: i got some butter');
+//     console.log('wife: lets get something to drink as well');
+//     return new Promise((resolve, reject) => resolve(`${t} cold drinks`))    
+// });
+
+// getColdDrinks.then((t)=>{
+//     console.log(t);
+// })
+
+// console.log('person4: shows ticket');
+// console.log('person5: shows ticket');
+
+
+
+
+
+
+
+// console.log('person1: shows ticket');
+// console.log('person2: shows ticket');
+
+// const preMovie = async()=>{
+
+//     const promiseWifeBringingTickets = new Promise((resolve, reject)=>{
+//         setTimeout(() => {
+//             resolve('tickets');
+//         }, 3000);
+//     })
+
+//     const getPopcorn = new Promise((resolve, reject)=> resolve('popcorn'));
+//     const getButter = new Promise((resolve, reject)=> resolve('butter'));
+//     const getColdDrinks = new Promise((resolve, reject)=> resolve('cold drinks'));
+
+//     let ticket = await promiseWifeBringingTickets;
+
+//     console.log(`wife: i have the ${ticket}`);
+//     console.log('husband: we should go in');
+//     console.log(`wife: no i am hungry`);
+
+//     let popcorn = await getPopcorn;
+
+//     console.log(`husband: i got some ${popcorn}`);
+//     console.log('husband: we should go in');
+//     console.log('wife: i need butter on my popcorn');
+
+//     let butter = await getButter;
+
+//     console.log(`husband: i got some ${butter}`);
+
+//     let colddrink = await getColdDrinks;
+
+//     console.log(`husband: i got the ${colddrink}`);
+//     console.log(`husband: anything else?`);
+//     console.log(`wife: lets go, we're getting late`);
+//     console.log(`husband: thanks for the reminder -_-`);
+
+//     return ticket;
+// }
+
+// preMovie().then((t)=>console.log('person3: shows the '+t));
+
+// console.log('person4: shows ticket');
+// console.log('person5: shows ticket');
+
 
 // const posts = [{title: 'post one', body: 'this is post one'}, {title: 'post two', body: 'this is post two'}];
 
-// function getPosts(){
-//     setTimeout(() => {
+// const myfunc = async ()=>{
+//     function displayPosts(){
 //         let output = '';
-//         posts.forEach((jello)=>{
-//             output = output + `<li> ${jello.title} </li>`;
+//         posts.forEach((post)=>{
+//             output = output + `<li> ${post.title} </li>`;
 //         })
 //         document.body.innerHTML = output;
-//     }, 0);
+//     }
+    
+//     function createPost(post){
+//         return new Promise((resolve, reject)=>{
+//             setTimeout(() => {
+//                 if(posts.push(post)){
+//                     resolve();
+//                 }
+//                 else{
+//                     reject();
+//                 }
+//             }, 1000);
+//         });
+//     }
+    
+//     function deletePost(){
+//         return new Promise((resolve, reject)=>{
+//             setTimeout(() => {
+//                 if(posts.pop())
+//                     resolve();
+//                 else{
+//                     reject();
+//                 }
+//             }, 1000);
+//         })
+//     }
+
+//     displayPosts();
+//     await createPost({title: 'post three', body: 'this is post three'});
+//     displayPosts();
+//     await createPost({title: 'post four', body: 'this is post four'});
+//     displayPosts();
+//     await deletePost();
+//     displayPosts();
+//     await deletePost();
+//     displayPosts();
+//     await deletePost();
+//     displayPosts();
+//     await deletePost();
+//     displayPosts();
+
 // }
 
-// function createPost(post){
-//     return new Promise((resolve, reject)=>{
-//         setTimeout(() => {
-//             posts.push(post);
-//             const error = false;
-
-//             if(!error){
-//                 resolve();
-//             }
-//             else{
-//                 reject('soomething went wrogn');
-//             }
-//         }, 6000);
-//     })
-// }
-
-// const promise1 = createPost({title: 'post three', body: 'this is post three'}).then(getPosts).catch(bob=>console.log(bob));
-
-// // function deletePost(){
-// //     return new Promise((resolve, reject)=>{
-// //         setTimeout(() => {
-// //             if(posts.pop()){
-// //                 resolve();
-// //             }
-// //             else{
-// //                 reject('an error was encountered');
-// //             }
-            
-// //         }, 1000);
-// //     });
-// // }
-
-// // deletePost().then(()=>{
-// //     getPosts();
-// //     deletePost().then(()=>{
-// //         getPosts();
-// //             deletePost().then(()=>{
-// //                 getPosts();
-// //                 createPost4({title: 'post four', body: 'this is post four'}).then(()=>{
-// //                     getPosts();
-// //                     deletePost().then(()=>{
-// //                         getPosts();
-// //                 })
-// //             });
-// //         })
-// //     })
-// // })
-
-
-// // function createPost4(post){
-// //     return new Promise((resolve, reject)=>{
-// //         setTimeout(() => {
-// //             posts.push(post);
-// //             const error = false;
-
-// //             if(!error){
-// //                 resolve();
-// //             }
-// //             else{
-// //                 reject('soomething went wrogn');
-// //             }
-// //         }, 1000);
-// //     })
-// // }
-
-// //.then() takes a function as an argument. A promise can only have one .then() and .catch();
-
-
-// // const promise1 = Promise.resolve('Hello world');
-// // const promise2 = 10;
-// // const promise3 = new Promise((resolve, reject)=>
-// // setTimeout(resolve, 2000, 'goodbye'));
-
-// // Promise.all([promise1, promise2, promise3]).then(values => console.log(values)).catch(error=> console.log('error foud'));
+// myfunc();
 
 
 
-//Question 2 & 3 - 
-const posts = [{title: 'post one', body: 'this is post one'}, {title: 'post two', body: 'this is post two'}];
-console.log('last active at: '+ new Date());
+//Why were promises discovered? promises were created as a better alternative to callback functions. Using callback functions one inside another inside another and so on can lead to something called as callback hell. Promises make the code more readable and easier to manage. In addition to that, promises also have better error handling because of the .catch() method.
 
-const createPost = function(post){
-    return new Promise((resolve, reject)=>{
-        console.log('processing...');
-        setTimeout(() => {
-            if(posts.push(post))
-            resolve(posts);
-            else{
-            reject();
-            }
-        }, 5000);
-    });
-}
+//async await makes the code more understandable and easy to manage. It allows us to write asynchronous code which looks like synchronous code, hence, making it easier to read and understand. e.g.
+//In the code at the top, using .then() multiple times makes the code look very complicated and hard to understand. On the other hand, the same functionalities were achieved using the await keyword and the code is also quite easy to understand.
 
-const updateUserActivityTime = function(){
-    return new Promise((resolve, reject)=>{
-        resolve();
-    })
-}
 
-function deletePost(){
-    return new Promise((resolve, reject)=>{
-        if(posts.pop())
-            resolve();
-        else{
-            reject();
-        }
-    })
-}
 
-Promise.all([createPost({title:'post three', body: 'this is post three'}), updateUserActivityTime]).then(([r1,r2])=>{
-    console.log(r1)
-    console.log('last active at: '+ new Date().getTime())
-}).then(()=>{
-    deletePost().then(()=>{
-        console.log(posts);
-    });
-})
-
-//4. The main reason we use Promise.all is to asynchronously resolve multiple promises at the same time. For example, if there are three promises, each having a delay of 5 seconds, then the total time taken for all the promises to run would be 15 seconds but this can be reduced down to 5 seconds simply by using Promise.all.
-
-//5. Promises are better than callbacks because they have better error handling. Promises make dealing with asynchronous operations easier as they are easier to manage. Instead of using callback functions, one inside another multiple times, leading to callback hell, its better to use a promise.
 
 
 
