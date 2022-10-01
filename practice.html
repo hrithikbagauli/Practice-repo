@@ -7,6 +7,20 @@
     <title>Document</title>
 </head>
 <body>
+    <form id="myform">
+        <h1>Registration page</h1>
+        <div id="error" style="background-color: red; color: white;"></div>
+        <label for="username">Name:</label>
+        <input type="text" id="username" placeholder="Username">
+        &nbsp;&nbsp;
+        <label for="email">Email:</label>
+        <input type="text" id="email" placeholder="Email">
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <ul id="items"></ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
     <script src="practice.js"></script>
 </body>
 </html>
