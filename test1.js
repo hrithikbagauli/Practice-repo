@@ -1,4 +1,4 @@
-const arr = [1,2,3,4,5,6];
-arr.forEach((i)=>{
-    console.log(i)
+let id;
+const promise1 = Promise.resolve('gu').then(function(val){
+    id = val;
 })
