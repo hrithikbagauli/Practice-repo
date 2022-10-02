@@ -10,7 +10,7 @@ const div = document.getElementById('error');
 const ul = document.getElementById('items');
 
 document.addEventListener('DOMContentLoaded',function(){
-    axios.get('https://crudcrud.com/api/a0698aa00e914577b441309e65713a16/loginDetails').then((res)=>{
+    axios.get('https://crudcrud.com/api/07a087cf1d014426a0682c174bc43ba3/loginDetails').then((res)=>{
         res.data.forEach((i) => {
             showOnScreen(i.name, i.email, i._id);
         });
@@ -28,7 +28,7 @@ myform.addEventListener('submit', function(e){
     }
     else{
         let id;
-        axios.post('https://crudcrud.com/api/a0698aa00e914577b441309e65713a16/loginDetails',{name: username.value, email: email.value}).then(res=>{
+        axios.post('https://crudcrud.com/api/07a087cf1d014426a0682c174bc43ba3/loginDetails',{name: username.value, email: email.value}).then(res=>{
             id = res.data._id
             showOnScreen(username.value, email.value, id);
     }).catch(err=>console.log('something went wrong'));
@@ -51,7 +51,17 @@ function showOnScreen(name, email, id){
     delbtn.addEventListener('click', function(e){
         e.preventDefault();
         ul.removeChild(e.target.parentElement);
-        axios.delete(`https://crudcrud.com/api/a0698aa00e914577b441309e65713a16/loginDetails/${e.target.parentElement.id}`).catch(err=>console.log('something went wrong while trying to delete'));
+        axios.delete(`https://crudcrud.com/api/07a087cf1d014426a0682c174bc43ba3/loginDetails/${e.target.parentElement.id}`).catch(err=>console.log('something went wrong while trying to delete'));
+    })
+
+    editbtn.addEventListener('click', function(e){
+        e.preventDefault();
+        ul.removeChild(e.target.parentElement);
+        axios.get(`https://crudcrud.com/api/07a087cf1d014426a0682c174bc43ba3/loginDetails/${e.target.parentElement.id}`).then(res=>{
+            document.getElementById('email').value = res.data.email;
+            document.getElementById('username').value = res.data.name;  
+        }).catch(err=>console.log(err));
+        axios.delete(`https://crudcrud.com/api/07a087cf1d014426a0682c174bc43ba3/loginDetails/${e.target.parentElement.id}`).catch(err=>console.log('something went wrong while trying to delete'));
     })
 }    
 
