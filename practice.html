@@ -8,18 +8,24 @@
 </head>
 <body>
     <form id="myform">
-        <h1>Registration page</h1>
-        <div id="error" style="background-color: red; color: white;"></div>
-        <label for="username">Name:</label>
-        <input type="text" id="username" placeholder="Username">
-        &nbsp;&nbsp;
-        <label for="email">Email:</label>
-        <input type="text" id="email" placeholder="Email">
+    <label for="expenseamount">Choose expenseamount:</label>
+    <input type="number" name="expenseamount" id="expenseamount">
 
-        <input type="submit" value="Submit">
+    <label for="description">Choose description:</label>
+    <input type="text" id="description">
+
+    <label for="category">Choose a category:</label>
+    <select name="category" id="category">
+        <option value="fuel">fuel</option>
+        <option value="food">food</option>
+        <option value="electricity">electricity</option>
+        <option value="movie">movie</option>
+    </select>
+
+    <input type="submit" value="Add expense">
     </form>
-
     <ul id="items"></ul>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
     <script src="practice.js"></script>
 </body>
