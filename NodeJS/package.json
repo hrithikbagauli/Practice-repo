@@ -1,0 +1,16 @@
+//npm is node package manager and it allows us to add our own scripts and install third party packages to our project which lets us add extra features to our project.
+//first navigate to your project folder and enter 'npm init' in the terminal. Hit enter and you'll be asked for package name, version, description, etc,  you can enter a name or just press enter for all these values,
+//you'll finally see that package.json file has been created. This is the configuration file.
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "learning node js",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js", //adding a new script. start is a reserved keyword which is used for the start script. when you type 'npm start' in the terminal, it'll always look for this start script in the json file. This is useful because its short and if we share our project with others, they won't have trouble finding out which is the entry javascript file. All they have to do is type 'npm start' in the terminal. 
+    "start-server": "node app.js" //adding another script. This is a custom script as "start-server" is not a reserved script name like 'start' in the above line. So to run this script, we need to type 'npm run start-server'
+  },
+  "author": "Hrithik Bagauli",
+  "license": "ISC"
+}
