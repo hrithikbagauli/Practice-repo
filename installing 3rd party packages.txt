@@ -1,0 +1,21 @@
+often, the core node packages or modules aren't enough so we require third party packages which allow us to have extra features.
+these third party packages are available at the npm repository and packages can be installed and managed using npm.
+
+we type 'npm install packagename' to install a third party package.
+
+e.g. so far we have to continuously save and type the 'node app.js' command everytime we make a change in our js file which is kind of cumbersome.
+So, to fix that, we can install a third party package called 'Nodemon' which restarts the node application whenever there are any changes in our js file.
+
+In addition to the 'npm install packagename' command, we can also define how the package should be installed.
+we might be installing the package to use it in development stage.
+or we might be installing it to use in production stage.
+It basically lets us know which package is used for what.
+for example - we can write 'npm install nodemon --save'    //this would mean that the package will be used in production.
+if we write 'npm install nodemon --save-dev'  //this means it'll be used in development only.
+if we write 'npm install nodemon -g'    //this means it can be used anywhere.
+
+after hitting enter, nodemon will be installed inside a new folder called node_modules. 
+we can always delete the node_modules folder to free space and install it again.
+
+now, after installing, we need to go to the package.json file and for the start script, write 'nodemon app.js' where it was written 'node app.js'. This will make the terminal look for nodemon locally.
+And now, everytime we save our file, nodemon will restart our js file automatically which is very convenient. 
