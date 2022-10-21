@@ -1,30 +1,31 @@
-//question 1 - we use express js to make it easier for ourselves to write code. With node js we had to write a lot of code for even basic things like extracting data from a request or writing the logic for different routes etc.
-//question 3 - middlewares are functions that have access to the request and response objects and a next function. It allows us to do work with requests and send a response. Also, the next function allows us to move to the next middleware.
-//question 4 - next is a function that allows us to move to the next middleware. if we don't use next(), nodejs won't be able to move on the next middleware and request would die. So, we either have to return a response or provide a next() function.
-//question 5 - res.send() allows us to send a response.
-//question 6 - the content-type is detected automatically by expressjs and it'll be set to 'text/html' since we're sending a string.
-//question 7 - there will be no content type in the header.
-//question 8 - app.listen() calls http.createServer() and passes itself so its basically the same as importing the server, then calling the createServer() method and passing a request listener and then finally calling the listen method on the server. It's better because its reduces the lines of code.
-
-
-
-// const http = require('http'); replaced by app.listen();
-
 const express = require('express');
 
-const app = express(); //the express package we imported in the line above exports a function and that's why we've written express(). This function will initialise a new object where expressjs will store and manage a lot of things for us so a lot of logic is present in this app variable.
+const app = express(); 
 
-app.use((req, res, next)=>{ //use() is a method provided by expressjs that lets us add a middleware. Here, the arrow function we're passing is the middleware function, which will be exectued for every incoming request. req and res are the request and response objects as we used earlier. next is a function that lets us move to another middleware function. without next(), the code will not move to the next middleware function.
-    // console.log('in the first middleware');
+//app.use() takes path as an optional argument, by default the path is '/'. 
+app.use('/',(req, res, next)=>{ //we've kept this middleware at the top of others because we want this middleware to be executed for every other middleware. We know that node js reads the middlewares in a specific order i.e. from top to bottom. So, this is how its going to work :- first, this middleware will be executed and since we've mentioned the path as '/' which means it'll check if the path on the browser starts with a '/' and obviously, every web address starts with a slash so it'll be executed for every web address. Also, we've used a next() method inside which will make sure that after this middleware, the control will move to the next middleware. And since we're returning a response in the other two middlewares, first the control will move to the next middleware and after a response is sent from that middleware, the control will again come back to this middleware and then because of the next() method, the control will now go to the third middleware. 
+    console.log('this runs for every request');
     next();
 });
 
-app.use((req, res, next)=>{ //use() is a method provided by expressjs that lets us add a middleware. Here, the arrow function we're passing is the middleware function, which will be exectued for every incoming request. req and res are the request and response objects as we used earlier. next is a function that lets us move to another middleware function. without next(), the code will not move to the next middleware function and the request will die. So, we either have to provide a next() function or return a response.
-    // console.log('in the second middleware');
-    res.send('<h1>{key:value}</h1>'); //with express, we can easily send a response like this and we don't even need to use res.setHeader('Content-Type', 'text/html') to set the content type as 'text/html'. the content type is automatically detected by express js.
+app.use('/addproduct',(req, res, next)=>{
+    console.log('inside a middleware');
+    res.send('<h1> add product </h1>');
 });
 
-// const server = http.createServer(app); //app is also a request handler, so we can use it like we used a request listener function earlier but so far we've not defined the logic for what to do for an incoming request.
-// server.listen(4000); //replaced by app.listen()
+app.use('/',(req, res, next)=>{ 
+    console.log('inside second middleware');
+    res.send('<h1> home page </h1>');
+});
 
-app.listen(4000); //instead of importing http and then using createServer() and then making that server listen to a port, we can directly write app.listen(portname) because the listen() method implemented by express js(as seen in the source code of express js) already imports http and creates a server behind the scenes. This makes it easier for us to write a cleaner code.
+app.listen(4000); 
+
+
+
+
+
+
+
+
+
+
