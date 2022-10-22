@@ -1,25 +1,23 @@
-//question 2 - even though express provides us a convenient way of accessing the request body, it doesn't parse the request body by default. So, we need to install a third party package called body-parser to parse the request body.
-
 const express = require('express');
-const bodyparser = require('body-parser'); //importing body-parser package
+//we've created two different files to handle routes, admin.js and shop.js because we want some things to be only accessible to the admin and not the users. So, shop.js is going to handle the data that is visible to the user and admin.js handles data that is visible only to the admin. admin.js does have a '/addproduct' page which will be visible to the users but it uses a get request so that the users can see and fill the form but what happens with the submitted data will all be taken care of in the backend and that's why we've kept it in a separate file.
+const adminRoutes = require('./routes/admin'); //importing router from admin.js
+const shopRoutes = require('./routes/shop');  //importing router from shop.js
+
+const bodyparser = require('body-parser'); 
 
 const app = express(); 
 
-app.use(bodyparser.urlencoded({extended: false})); //we have to call the urlencoded() method using the bodyparser object. urlencoded() will create a middleware(happens behind the scenes so we don't see it) for parsing request body and it also has a next() method so that the request also reaches our middlewares. {extended:false} is just to comply with some rules, if we don't follow it we get a warning.
+app.use(bodyparser.urlencoded({extended: false}));
 
-app.use('/addproduct',(req, res, next)=>{
-    res.send('<form action="/product" method="POST"><input type="text" name="title"><select name="size"><option>small</option><option>medium</option><option>large</option></select><button type="submit">add product</button></form>');
-});
-app.post('/product', (req, res, next)=>{ // app.use() will execute for both get and post requests, but if we want a particular middleware to execute only for a specific type of request i.e. get or post then we can use app.get() or app.post(). they're both the same as app.use() but the only difference is that app.get() will only get executed for a get request and app.post() only for post requests.
-    console.log(req.body); //express provides us another convenient property of accessing the request's body but it doesn't try to parse the incoming body request by default and that's why it shows undefined when we try to print the request body without parsing. So, for parsing the request body, we need to install another third party package called body-parser.
-    console.log(req.body.title); //using the name we provided in the input field in the form to access the properties of the object.
-    console.log(req.body.size);
-    res.redirect('/'); //redirects to the mentioned page. Here, express makes it easy to redirect to another page because earlier we had to change to status code and set header to redirect but now we can do it simply using the redirect() method provided by express.
-});
+app.use('/admin', adminRoutes); //router is basically a middleware function so we can directly use it like this. Also, the first argument here is a filter that allows us to put a common starting segment for all urls inside admin.js which basically means that all the routes inside admin.js will start with '/admin' and the benefit of this is that we don't have to modify all the routes one by one.
 
-app.use('/',(req, res, next)=>{ 
-    res.send('<h1> home page </h1>');
-});
+app.use('/shop', shopRoutes); 
+
+app.use((req, res, next)=>{ //adding another middleware to handle the situation if the page doesn't exist.
+    res.status(404).send( //status() lets us set the status code.
+        '<h1>Page not found</h1>'
+    )
+})
 
 app.listen(4000); 
 
