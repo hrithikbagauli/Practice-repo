@@ -1,32 +1,37 @@
 const express = require('express');
-//we've created two different files to handle routes, admin.js and shop.js because we want some things to be only accessible to the admin and not the users. So, shop.js is going to handle the data that is visible to the user and admin.js handles data that is visible only to the admin. admin.js does have a '/addproduct' page which will be visible to the users but it uses a get request so that the users can see and fill the form but what happens with the submitted data will all be taken care of in the backend and that's why we've kept it in a separate file.
-const adminRoutes = require('./routes/admin'); //importing router from admin.js
-const shopRoutes = require('./routes/shop');  //importing router from shop.js
+const app = express();
+const bodyparser = require('body-parser');
+const fs = require('fs');
 
-const bodyparser = require('body-parser'); 
+app.use(bodyparser.urlencoded({extended:false}));
 
-const app = express(); 
-
-app.use(bodyparser.urlencoded({extended: false}));
-
-app.use('/admin', adminRoutes); //router is basically a middleware function so we can directly use it like this. Also, the first argument here is a filter that allows us to put a common starting segment for all urls inside admin.js which basically means that all the routes inside admin.js will start with '/admin' and the benefit of this is that we don't have to modify all the routes one by one.
-
-app.use('/shop', shopRoutes); 
-
-app.use((req, res, next)=>{ //adding another middleware to handle the situation if the page doesn't exist.
-    res.status(404).send( //status() lets us set the status code.
-        '<h1>Page not found</h1>'
-    )
+app.post('/', (req, res, next)=>{
+    fs.writeFile('message.txt', `${req.body.username} : ${req.body.message} `, {flag: 'a'}, (err)=>{ //flag: 'a' sets the file mode to 'append' which means any new data will be appended to the existing data and not replace the previous data. The default mode is to replace the data when you write in a file.
+        err? console.log(err):res.redirect('/');
+    })
 })
 
-app.listen(4000); 
+app.get('/', (req, res, next)=>{
+    fs.readFile('message.txt', {encoding: 'utf-8'}, (err, data)=>{//data is the data that has been read from the file.
+        if(err){//an error will occur if there's no data to read. So, we're using that for a condition. In case of an error, set the value of data to 'no chats exist'
+           data = 'no chats exist';
+        }
+        //creating a hidden input field so that it doesn't appear on the webpage. This is just a dummy input field.
+        //taking the value from the hidden dummy field and setting its value to the username stored in the localstorage.
+        res.send(`${data}<form action="/" method="POST" onsubmit="document.getElementById('username').value = localStorage.getItem('username')"> 
+        <input type="text" name="message" placeholder="write a message">
+        <input type="hidden" name="username" id="username"> 
+        <button type="submit">send message</button>
+        </form>`);
+    });
+});
 
+//onsubmit decides what happens when the form is submitted.
+app.get('/login', (req, res, next)=>{
+    res.send(`<form action="/" onsubmit="localStorage.setItem('username', document.getElementById('username').value)"> 
+    <input type="text" id="username" name="username" placeholder="username"><br>
+    <button type="submit">login</button>
+    </form>`);
+})
 
-
-
-
-
-
-
-
-
+app.listen(4000);
