@@ -1,10 +1,17 @@
-const express = require('express'); 
-const router = express.Router();  
-const path = require('path'); 
-const rootdir = require('../util/path') //importing the path we got in path.js
+const path = require('path');
 
-router.get('/addproduct',(req, res, next)=>{
-    res.sendFile(path.join(rootdir, 'views', 'addproduct.html')); //using the path we got in path.js .The benefit of using this is that it works on every Operating system.
-});
+const express = require('express');
+
+const productsController = require('../controllers/products');
+
+const router = express.Router();
+
+
+
+// /admin/add-product => GET
+router.get('/add-product', productsController.getAddProduct);
+
+// /admin/add-product => POST
+router.post('/add-product', productsController.postAddProduct);
 
 module.exports = router;
