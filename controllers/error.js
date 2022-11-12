@@ -1,3 +1,3 @@
-exports.showErrorPage = (req, res, next) => {
-    res.status(404).render('404', { pageTitle: 'Page Not Found' , path: '/404'}); //we're sending path here, because in the navigation.ejs file, it compares if the path we've sent is equal to '/' or 'admin/add-product' and if we don't send the path here, path will remain undefined and since undefined cannot be compared with anything, we'll get an error.
-}
+exports.get404 = (req, res, next) => {
+  res.status(404).render('404', { pageTitle: 'Page Not Found', path: '/404' });
+};
