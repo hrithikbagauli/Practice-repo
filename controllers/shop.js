@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const Cart = require('../models/cart');
 
 exports.getProducts = (req, res, next) => {
   Product.fetchAll(products => {
@@ -11,9 +12,13 @@ exports.getProducts = (req, res, next) => {
 };
 
 exports.getProduct = (req, res, next) => {
-  const prodId = req.params.productId; //req.params.productId will get the value of productId from the request. req.params is used to access the value from a request.
+  const prodId = req.params.productId;
   Product.findById(prodId, product => {
-    res.render('shop/product-detail', {product : product, pageTitle : product.title, path : '/products'}); //here, product : product => the one on the left is just a name for the key, the one on the right is the product we passed in the parameter.
+    res.render('shop/product-detail', {
+      product: product,
+      pageTitle: product.title,
+      path: '/products'
+    });
   });
 };
 
@@ -33,6 +38,14 @@ exports.getCart = (req, res, next) => {
     pageTitle: 'Your Cart'
   });
 };
+
+exports.postCart = (req, res, next) => {
+  const prodId = req.body.productId;
+  Product.findById(prodId, (product)=>{
+    Cart.addProduct(prodId, product.price);
+  })
+  res.redirect('/cart');
+}
 
 exports.getOrders = (req, res, next) => {
   res.render('shop/orders', {
