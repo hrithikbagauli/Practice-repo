@@ -1,21 +1,5 @@
-const fs = require('fs');
-const path = require('path');
-
-const p = path.join(
-  path.dirname(process.mainModule.filename),
-  'data',
-  'products.json'
-);
-
-const getProductsFromFile = cb => {
-  fs.readFile(p, (err, fileContent) => {
-    if (err) {
-      cb([]);
-    } else {
-      cb(JSON.parse(fileContent));
-    }
-  });
-};
+const Cart = require('./cart');
+const db = require('../util/database');
 
 module.exports = class Product {
   constructor(id, title, imageUrl, description, price) {
@@ -27,45 +11,20 @@ module.exports = class Product {
   }
 
   save() {
-    getProductsFromFile(products => {
-      if (this.id) {
-        const existingProductIndex = products.findIndex(prod => prod.id === this.id);
-        const updatedProducts = [...products];
-        updatedProducts[existingProductIndex] = this;
-        fs.writeFile(p, JSON.stringify(updatedProducts), err => {
-          console.log(err);
-        });
-      }
-      else {
-        this.id = Math.random().toString();
-        products.push(this);
-        fs.writeFile(p, JSON.stringify(products), err => {
-          console.log(err);
-        });
-      }
-
-    });
+    return db.execute('insert into products (title, price, imageUrl, description) values (?, ?, ?, ?)', 
+    [this.title, this.price, this.imageUrl, this.description]
+    );  //we're using (?,?,?,?) here because its a secure way of inserting values into our database and helps prevent SQL injection attacks
   }
 
-  static fetchAll(cb) {
-    getProductsFromFile(cb);
+  static deleteById(id) {
+    return db.execute('delete from products where products.id=?',[id]);
   }
 
-  static findById(id, cb) {
-    getProductsFromFile(products => {
-      const product = products.find(p => p.id === id);
-      cb(product);
-    });
+  static fetchAll() {
+    return db.execute('select * from products'); //we know that db.execute() will return a promise so we could do db.execute('select * from...').then().catch() but we're returning the entire promise itself so that we can use it somewhere else. Using then() would mean, we have to use it here itself.
   }
 
-  static deleteProductById(prodId){
-    getProductsFromFile(products => {
-        const existingProductIndex = products.findIndex(prod => prod.id === prodId);
-        const updatedProducts = [...products];
-        updatedProducts.splice(existingProductIndex, 1);
-        fs.writeFile(p, JSON.stringify(updatedProducts), err => {
-          console.log(err);
-        });
-    });
+  static findById(id) {
+    return db.execute('select * from products where products.id=?',[id]);
   }
 };
