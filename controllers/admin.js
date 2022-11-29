@@ -13,13 +13,19 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  const product = new Product(null, title, imageUrl, description, price);
-  product
-  .save()
-  .then(() => {
-    res.redirect('/');
+  Product
+  .create({//create() is a method provided by sequelize that creates an element based on the model(product model in this case) and immediately saves it to the database. build() is another method that does the same thing but with that, the element has to be saved manually and that's why we've used create() because it does both for us.  
+    title: title, //the one on the left refers to the attribute we defined in the product model and the one on the right refers to the 'const title = req.body.title' above. Same is true for the ones below.
+    price: price,
+    imageUrl: imageUrl,
+    description: description
   })
-  .catch(err => console.log(err));
+  .then(result=>{
+    res.redirect('/admin/products');
+  })
+  .catch(err=>{
+    console.log(err);
+  })
 };
 
 exports.getEditProduct = (req, res, next) => {
@@ -28,7 +34,8 @@ exports.getEditProduct = (req, res, next) => {
     return res.redirect('/');
   }
   const prodId = req.params.productId;
-  Product.findById(prodId, product => {
+  Product.findByPk(prodId)
+  .then(product=>{
     if (!product) {
       return res.redirect('/');
     }
@@ -38,7 +45,10 @@ exports.getEditProduct = (req, res, next) => {
       editing: editMode,
       product: product
     });
-  });
+  })
+  .catch(err=>{
+    console.log(err);
+  })
 };
 
 exports.postEditProduct = (req, res, next) => {
@@ -47,22 +57,26 @@ exports.postEditProduct = (req, res, next) => {
   const updatedPrice = req.body.price;
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesc = req.body.description;
-  const updatedProduct = new Product(
-    prodId,
-    updatedTitle,
-    updatedImageUrl,
-    updatedDesc,
-    updatedPrice
-  );
-  updatedProduct.save();
-  res.redirect('/admin/products');
+  Product.findByPk(prodId)
+  .then(product=>{
+    product.title = updatedTitle;//changing the value of the retrieved product. Doing the same below.
+    product.price = updatedPrice;
+    product.description = updatedDesc;
+    product.imageUrl = updatedImageUrl;
+    return product.save(); //Saving the changes to the database. save() method comes with sequelize that saves the data in the database. If the product exists, it'll update the database, otherwise it'll create a new product in the database. We're using this method here because in the few lines above we're updating the product we retrieved but those changes exist only inside this file, so in order to change the data in the database as well, we need to use save().
+  })
+  .then(result=>{
+    res.redirect('/admin/products');
+    console.log('Product updated!'); //this then() is to deal with whatever response comes after save() method.
+  })
+  .catch(err=>console.log(err));
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll().then(
-    ([rows]) => {
+  Product.findAll().then(
+    products => {
       res.render('admin/products', {
-        prods: rows,
+        prods: products,
         pageTitle: 'Admin Products',
         path: '/admin/products'
       });
@@ -72,8 +86,13 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteById(prodId).then(
-    res.redirect('/admin/products')
-  ).catch(err=>console.log(err));
-  
+  Product.findByPk(prodId)
+  .then(product=>{
+    return product.destroy(); //destroy() method comes with sequelize and is used to delete an item from the database. product refers to the retrieved product and product.destroy() means delete the retrieved product from the database.
+  })
+  .then(result=>{
+    console.log('Product deleted!');
+    res.redirect('/admin/products');
+  })
+  .catch(err=>console.log(err));
 };
