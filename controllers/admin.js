@@ -13,8 +13,8 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  Product
-  .create({//create() is a method provided by sequelize that creates an element based on the model(product model in this case) and immediately saves it to the database. build() is another method that does the same thing but with that, the element has to be saved manually and that's why we've used create() because it does both for us.  
+  req.user
+  .createProduct({  //createProduct() is a method that comes with sequelize and as the name suggests, it creates a product. In this case, it creates a product for the user present in req.user .
     title: title, //the one on the left refers to the attribute we defined in the product model and the one on the right refers to the 'const title = req.body.title' above. Same is true for the ones below.
     price: price,
     imageUrl: imageUrl,
@@ -34,7 +34,8 @@ exports.getEditProduct = (req, res, next) => {
     return res.redirect('/');
   }
   const prodId = req.params.productId;
-  Product.findByPk(prodId)
+  req.user
+  .getProducts({where: {id: prodId}}) //getProducts() comes with sequelize.
   .then(product=>{
     if (!product) {
       return res.redirect('/');
@@ -73,7 +74,8 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.findAll().then(
+  req.user.getProducts()
+  .then(
     products => {
       res.render('admin/products', {
         prods: products,
