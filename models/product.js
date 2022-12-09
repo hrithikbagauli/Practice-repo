@@ -1,4 +1,5 @@
-const Sequelize = require('sequelize'); //this will import a class or constructor function and hence we've used capital 'S'.
+const Sequelize = require('sequelize');
+
 const sequelize = require('../util/database');
 
 const Product = sequelize.define('product', {
