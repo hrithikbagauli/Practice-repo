@@ -4,7 +4,10 @@ const btn = document.querySelector('button') as HTMLButtonElement; //typescript 
 const numResults: number[] = []; //here, we're telling the compiler that all the items inside this array will be of type numbers.
 const stringResults: string[] = [];
 
-function add(num1: number | string, num2: number | string){ // | symbol is called a pipe and number | string is called a union type, meaning that the data can be a number or a string. 
+type NumOrString = number | string; //type allows us to create aliases. So instead of writing number | string everywhere, we can simply use NumOrString now.
+type Result = {val: number; timeStamp: Date}; //type also allows to create aliases for objects.
+
+function add(num1: NumOrString, num2: NumOrString){ // | symbol is called a pipe and number | string is called a union type, meaning that the data can be a number or a string. 
     //writing return num1 + num2; would throw an error because typescript wants us to explicitly specify what to do when the parameters are of type number and what to do when they're a string and otherwise.
     if(typeof num1==='number' && num2==='number'){
         return num1+num2;
@@ -28,9 +31,13 @@ btn.addEventListener('click', ()=>{
     console.log(numResults, stringResults); 
 })
 
-function printResult(resultObj: {val: number; timeStamp: Date}){ //here, we're defining a structure for the object parameter on what the object argument should look like when this function is called. So, if the value being passed doesn't follow this format, it'll throw an error.
+function printResult(resultObj: Result){ //here, we're defining a structure for the object parameter on what the object argument should look like when this function is called. So, if the value being passed doesn't follow this format, it'll throw an error.
     console.log(resultObj.val);
 }
 
 add(1, 2);
 
+interface ResultObj{ //we can also use an interface to set the structure of an object.
+    val: number,
+    timestamp: Date;
+}
