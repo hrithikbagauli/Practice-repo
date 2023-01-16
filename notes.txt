@@ -43,7 +43,29 @@ strict mode disallows things that are usually allowed in typescript. for example
 -----------------------------------------
 ! next to any element means that we know for sure that the element is not null, even if it could theoretically be null.
 -----------------------------------------
+'any' type should not be used because it allows all types of values and this can lead to errors.
+--------------------------------------------
+we can handle objects by using aliases or interfaces and set a structure for the object so that an error gets thrown in case the structure of the object is not followed.
+--------------------------------------------
+Arrays can be handled by setting the type of arguments the array will take. e.g. const arr: number[] = []; or const arr: Array<number> = [];
+--------------------------------------------
+type is used to create aliases which allow us to set a name for custom types. e.g. type NumOrString = number | string;  or type myobj = {val: number};
+-------------------------------------------
+interfaces are preferred over the type keyword because type can only be used to create aliases whereas interfaces provide more features in addition to creating aliases such as specifying the methods and properties that must be implemented.
+-------------------------------------------
+An array is a generic type because its a type on its own i.e. its a list of items, and secondly it interacts with another type i.e. the type of data inside the array.
+---------------------------------------------
+we have to change the target to es6 to be able to use the new features that came with es6 such as promises, arrow functions etc.
+----------------------------------------------
+const mypromise = new Promise<string>((resolve, reject)=>{ //promise is also a generic type because first of all, its of type promise and second, it resolves or rejects to some type. e.g. a promise might resolve to a string or a number.
+    setTimeout(()=>{
+        resolve('it worked!'); //this promise resolves to a string.
+    }, 1000);
+});
 
+mypromise.then((result)=>{
+    console.log(result.split('w'));//since this promise resolves to a string, we can use string methods on result here.
+})
 
 
 
