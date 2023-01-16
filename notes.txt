@@ -26,4 +26,24 @@ when we compile a typescript file using the command :- tsc app.ts, it converts t
 
 --------------------------------------
 The different types available in typescript are :- number, string, boolean, object, array, any etc.
+----------------------------------------
+function add(num1: number, num2: number){
+	return num1+num2;
+}
+add(1,2);
+add('1','2'); //will show an error because the type has been specified and typescript is a strictly typed language so will show an error because we're trying to pass string arguments where only number arguments are accepted.
+----------------------------------------
+typescript can infer the type means that it knows what kind of value will go inside a variable even if we've not specified them explicitly. In addition to that, it also expects the possible values and shows errors if there's a possibility of a null value and help avoid errors.
+----------------------------------------
+type inference can show errors when null values are possible theoretically, even if we know that there won't be any null values. In such cases, we use type casting to explicitly state what type of value will go inside a variable. We do so using the 'as' keyword. e.g. document.getElementById('num1') as HTMLInputElement.
+-----------------------------------------
+tsc --init command creates a file called tsconfig.json that contains many configuration options we can set for our compiler.
+-----------------------------------------
+strict mode disallows things that are usually allowed in typescript. for example, it doesn't allow objects that are possibly null and forces us to explicitly state the type of object or using if conditions. Also, it doesn't allow you to leave the parameters without defining a type, if any kind of values are allowed then you choose the 'any' type.
+-----------------------------------------
+! next to any element means that we know for sure that the element is not null, even if it could theoretically be null.
+-----------------------------------------
+
+
+
 
