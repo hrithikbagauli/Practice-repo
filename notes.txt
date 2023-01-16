@@ -1,0 +1,29 @@
+what advantage does typescript give us? Explain with examples.
+
+typescript is basically javascript with extra features. JavaScript is a dynamically typed language but typescript allows us to make it statically typed. This helps us avoid errors and write a cleaner code because the compiler throws an error if we try to pass the wrong type of argument. For example - we can specify what type of arguments are acceptable to a function in the following manner: -
+
+function add(num1: number, num2: number){
+	return num1+num2;
+}
+add(1,2);
+add('1','2'); //the compiler will throw an error in this line because we set the function parameters to only accept arguments of type number.
+//the advantage of using typescript here because if we were using javascript here, it would simply concat the two values and return '12'.
+
+------------------------------------
+
+typescript adds the following features to javascript:-
+1. Types:- we can set the data type.
+2. features like interfaces, generics which do not exist in javascript.
+3. meta programming features like decorators.
+4. rich configuration options - allows us to configure how our code should be compiled.
+
+---------------------------------
+A typescript compiler is required to convert typescript code into javascript code that can be run on browsers or a server.
+In addition to that, typescript compilers also performs type checking, which can catch errors early in the development process and make it easier to find and fix bugs. 
+
+-----------------------------------
+when we compile a typescript file using the command :- tsc app.ts, it converts the typescript code to javascript code and puts it into a file called app.JavaScript
+
+--------------------------------------
+The different types available in typescript are :- number, string, boolean, object, array, any etc.
+
