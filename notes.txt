@@ -1,71 +1,19 @@
-what advantage does typescript give us? Explain with examples.
-
-typescript is basically javascript with extra features. JavaScript is a dynamically typed language but typescript allows us to make it statically typed. This helps us avoid errors and write a cleaner code because the compiler throws an error if we try to pass the wrong type of argument. For example - we can specify what type of arguments are acceptable to a function in the following manner: -
-
-function add(num1: number, num2: number){
-	return num1+num2;
-}
-add(1,2);
-add('1','2'); //the compiler will throw an error in this line because we set the function parameters to only accept arguments of type number.
-//the advantage of using typescript here because if we were using javascript here, it would simply concat the two values and return '12'.
-
-------------------------------------
-
-typescript adds the following features to javascript:-
-1. Types:- we can set the data type.
-2. features like interfaces, generics which do not exist in javascript.
-3. meta programming features like decorators.
-4. rich configuration options - allows us to configure how our code should be compiled.
-
----------------------------------
-A typescript compiler is required to convert typescript code into javascript code that can be run on browsers or a server.
-In addition to that, typescript compilers also performs type checking, which can catch errors early in the development process and make it easier to find and fix bugs. 
-
------------------------------------
-when we compile a typescript file using the command :- tsc app.ts, it converts the typescript code to javascript code and puts it into a file called app.JavaScript
-
---------------------------------------
-The different types available in typescript are :- number, string, boolean, object, array, any etc.
-----------------------------------------
-function add(num1: number, num2: number){
-	return num1+num2;
-}
-add(1,2);
-add('1','2'); //will show an error because the type has been specified and typescript is a strictly typed language so will show an error because we're trying to pass string arguments where only number arguments are accepted.
-----------------------------------------
-typescript can infer the type means that it knows what kind of value will go inside a variable even if we've not specified them explicitly. In addition to that, it also expects the possible values and shows errors if there's a possibility of a null value and help avoid errors.
-----------------------------------------
-type inference can show errors when null values are possible theoretically, even if we know that there won't be any null values. In such cases, we use type casting to explicitly state what type of value will go inside a variable. We do so using the 'as' keyword. e.g. document.getElementById('num1') as HTMLInputElement.
------------------------------------------
-tsc --init command creates a file called tsconfig.json that contains many configuration options we can set for our compiler.
------------------------------------------
-strict mode disallows things that are usually allowed in typescript. for example, it doesn't allow objects that are possibly null and forces us to explicitly state the type of object or using if conditions. Also, it doesn't allow you to leave the parameters without defining a type, if any kind of values are allowed then you choose the 'any' type.
------------------------------------------
-! next to any element means that we know for sure that the element is not null, even if it could theoretically be null.
------------------------------------------
-'any' type should not be used because it allows all types of values and this can lead to errors.
---------------------------------------------
-we can handle objects by using aliases or interfaces and set a structure for the object so that an error gets thrown in case the structure of the object is not followed.
---------------------------------------------
-Arrays can be handled by setting the type of arguments the array will take. e.g. const arr: number[] = []; or const arr: Array<number> = [];
---------------------------------------------
-type is used to create aliases which allow us to set a name for custom types. e.g. type NumOrString = number | string;  or type myobj = {val: number};
--------------------------------------------
-interfaces are preferred over the type keyword because type can only be used to create aliases whereas interfaces provide more features in addition to creating aliases such as specifying the methods and properties that must be implemented.
--------------------------------------------
-An array is a generic type because its a type on its own i.e. its a list of items, and secondly it interacts with another type i.e. the type of data inside the array.
----------------------------------------------
-we have to change the target to es6 to be able to use the new features that came with es6 such as promises, arrow functions etc.
-----------------------------------------------
-const mypromise = new Promise<string>((resolve, reject)=>{ //promise is also a generic type because first of all, its of type promise and second, it resolves or rejects to some type. e.g. a promise might resolve to a string or a number.
-    setTimeout(()=>{
-        resolve('it worked!'); //this promise resolves to a string.
-    }, 1000);
-});
-
-mypromise.then((result)=>{
-    console.log(result.split('w'));//since this promise resolves to a string, we can use string methods on result here.
-})
-
-
-
+we install @types/node because some methods are only available inside node js and not javascript so if we tried to run our node js code in the browser, it won't work. for example, the require method only works in node js so typescript shows an error because it doesn't know that this method exists. So, to let typescript know that it exists, we install a dependency called '@types/node' for the development phase using the command:- npm install --save-dev @types/node  .
+this package basically lets us run node js code in typescript by translating our node js code to javascript. 
+----------------------------------------------------
+we need to install @types/express because typescript doesn't know what express code looks like or how its methods are implemented. This is why we need to install types/express so that we're able to use express methods and also take advantage of the typescript features that help avoid errors.
+----------------------------------------------------
+moduleResolution basically tells the compiler, where to find a particular import. If its value is set to node, it'll look for the imports in the node_modules folder. This is why we need to change moduleResolution so that the typescript compiler knows where to find the imported modules.
+-----------------------------------------------------
+import is similar to require because typescript converts the import keyword to require in the js file.
+-----------------------------------------------------
+there are two syntaxes of importing:-
+   a) import express = require('express');
+   b) import express from 'express';
+-----------------------------------------------------
+import {Router} from 'express' works by importing only the Router object from the express package inside the node_modules folder. It allows us to import only the package we need. Without it, we would first need to import the express package and then extract the Router object from that.
+-----------------------------------------------------
+interface is a way of defining the structure of an object. It can also be used to define methods and properties that a class must implement. We have to create it for todos type to define a specific structure for the todos to make sure that the values that do not follow the structure are not allowed.
+-----------------------------------------------------
+named exports are used to export multiple values from a module, while default exports are used to export a single value as the default export from a module. We use the 'export' keyword for a named export and the 'export default' for a default export.
+-----------------------------------------------------
