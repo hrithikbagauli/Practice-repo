@@ -17,3 +17,8 @@ interface is a way of defining the structure of an object. It can also be used t
 -----------------------------------------------------
 named exports are used to export multiple values from a module, while default exports are used to export a single value as the default export from a module. We use the 'export' keyword for a named export and the 'export default' for a default export.
 -----------------------------------------------------
+we use RequestBody and RequestParams because typescript can only predict the values that'll go inside the req object but it doesn't know what will be inside the body of the request i.e. req.body and that's why keeps the type set as 'any' for req.body, but since the entire point of typescript is to write error-proof code, we need to use typecasting to avoid errors.
+------------------------------------------------------
+Our file structure becomes messy when we have multiple js files after converting the ts file to js. To fix this, we set the value of outDir to the folder where we want to store the .js files i.e. ./dist in this case, and rootDir to the folder that contains all the .ts files i.e. ./src in this case.
+--------------------------------------------------------
+we add node dist/app.js in package.json to provide the script so that we can use the 'npm start' command and directly start the server instead of writing node dist/app.js everytime we make a change in our code. In addition to that, we can also use the nodemon package to automatically restart the server when we make a change in our code.
