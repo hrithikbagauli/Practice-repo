@@ -1,0 +1,16 @@
+Vertical scaling - means adding more power to your machine.
+horizontal scaling - means adding more machines to your system.
+
+there's a limit to how much power you can add to your machine. At some point, your system is going to reach its limit so you'll have to scale your system using horizontal scaling and add more machines to it.
+
+
+One major anti pattern to avoid with databases is using them as message queues. 
+how does a message queue work:- if server A wants to communicate with server B, it'll write the message inside the database for server B. Server B will ask the database if there are any messages for it. The process of asking is called polling.
+
+why this is an antipattern:-
+1. Polling is a heavy operation since the server needs to ask the database in regular intervals if there are any messages for it by inserting a query into the database.
+2. If the server asks for data very frequently, in short intervals, it increases the load on the database. On the other hand, if the polling interval is long, then the user will have to wait a long time to get the response because the server has a long polling interval and this will ruin the user experience.
+3. Another problem caused by using databases as message queues is that scaling is difficult. Adding more servers to your system will put more and more load on the database and it'll crash.
+
+
+Microservice architecture vs monolith architecture.
